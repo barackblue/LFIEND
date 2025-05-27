@@ -74,7 +74,7 @@ encoders = {
 # Common signs of LFI or useful file contents
 lfi_signatures = [
     "root:x:", "flag{", "snf{", "/bin/bash", "HOME=", "HTTP_USER_AGENT",
-    "DOCTYPE html", "<?php", "Linux version", "base64"
+    "<?php", "Linux version", "base64"
 ]
 
 RED = "\033[91m"
