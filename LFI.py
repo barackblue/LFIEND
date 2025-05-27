@@ -4,6 +4,8 @@ import sys
 import base64
 import re
 import pyfiglet
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 text = "LFiend"
 
@@ -12,7 +14,7 @@ for font in ["lean"]:
     
     print(f"\033[31m{ascii_art}\033[0m")  # Wrap the ASCII art with red color code and reset
     print("I breack stuff... then fix them just to breack them better!")
-    print("By B.Yusuph, version 0.0 ")
+    print("By B.Yusuph, version 0.01 ")
     print("                              please comment improvements, sugestions and missing path on my GIT account to patch them right away.")
 
 # Base target URL
@@ -106,9 +108,9 @@ def scan_lfi():
                 try:
                     if method == 'get':
                         full_url = f"{target_url}?{param}={payload}"
-                        r = requests.get(full_url, timeout=5, headers=headers)
+                        r = requests.get(full_url, timeout=5, headers=headers, verify=False)
                     else:
-                        r = requests.post(target_url, data={param: payload}, headers=headers, timeout=5)
+                        r = requests.post(target_url, data={param: payload}, headers=headers, timeout=5, verify=False)
 
                     status_code = r.status_code
                     content = r.text.strip()
@@ -126,7 +128,7 @@ def scan_lfi():
 
 
                     elif "No such file" not in content and len(content) > 0:
-                        print(f"    ⚠️  {GREY}Potential LFI — manual review recommended.{RESET}")
+                        print(f"    ⚠️  {GREY}Found NULL but the page could be Potential LFI — manual review recommended.{RESET}")
                         print(f"    --- Snippet ---\n{content[:300]}\n")
                 except Exception as e:
                     print(f"    ❌ Error: {e}")
